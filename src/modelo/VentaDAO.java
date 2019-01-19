@@ -24,14 +24,13 @@ public class VentaDAO implements IntGenericoCRUD<Venta, String>{
 	@Override
 	public int insert(Venta entidad) {
 		int filasCambiadas = -1;
-		sql = "insert into ventas values(?, ?, ?, ?)";
+		sql = "insert into ventas (idCliente, idLibro, fecha) values(?, ?, ?)";
 		Date fecha = new Date();
 		try {
 			ps = conn.prepareStatement(sql);
-			ps.setInt(1, entidad.getIdVenta());
-			ps.setInt(2, entidad.getIdCliente());
-			ps.setInt(3, entidad.getIdLibro());
-			ps.setDate(4, (java.sql.Date) fecha);
+			ps.setInt(1, entidad.getIdCliente());
+			ps.setInt(2, entidad.getIdLibro());
+			ps.setDate(3, (java.sql.Date) fecha);
 			filasCambiadas = ps.executeUpdate();
 			
 		}catch(SQLException ex) {
@@ -59,7 +58,7 @@ public class VentaDAO implements IntGenericoCRUD<Venta, String>{
 	@Override
 	public Venta findById(String clave) {
 		Venta v = null;
-		sql = "select * from ventas where id= ?";
+		sql = "select * from ventas where idVenta= ?";
 		try {
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, clave);
@@ -94,7 +93,7 @@ public class VentaDAO implements IntGenericoCRUD<Venta, String>{
 	@Override
 	public int delete(String clave) {
 		int i = -1;
-		sql = "delete from ventas where id= ?";
+		sql = "delete from ventas where idVenta= ?";
 		try {
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, clave);
@@ -105,11 +104,6 @@ public class VentaDAO implements IntGenericoCRUD<Venta, String>{
 		return i;
 	}
 
-	@Override
-	public E findById(K key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	public Venta cargarDatos() throws SQLException{
 		Venta ven = new Venta();

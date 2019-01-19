@@ -5,24 +5,25 @@
 <head>
 <meta charset="UTF-8">
 <title>Login</title>
-<form action="Login" method="post">
-
-	<label for="user">Usuario: </label> 
-	<input type="text" name="user"><br>
-
-	<label for="pass">Password: </label> 
-	<input type="text" name="pass"><br>
-
-	Recordar
-	usuario:<input type="checkbox" name="recordar" value="si"></input>
-	
-	<br> <input type="submit" value="Entrar"><br>
-
-	<a href="registro.jsp">Regístrese</a>
-
-</form>
 </head>
 <body>
+	<form action="Login" method="post">
+
+		<label for="user">Usuario: </label> <input type="text" name="user"><br>
+
+		<label for="pass">Password: </label> <input type="text" name="pass"><br>
+
+		Recordar usuario:<input type="checkbox" name="recordar" value="si"></input>
+
+		<br> <input type="submit" value="Entrar"><br> 
+		<ahref="registro.jsp">Regístrese</a>
+
+	</form>
+
+	<% 	String mensa = (String)request.getAttribute("mensaje");
+		if (mensa != null){%>
+	<h3><%= mensa %></h3>
+	<%} %>
 
 </body>
 </html>

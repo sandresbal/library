@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Selecciona tema</title>
 </head>
 <body>
 	<h1>Seleccione tema</h1>
