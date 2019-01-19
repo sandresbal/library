@@ -47,7 +47,7 @@ public class LibroDAO implements IntGenericoCRUD<Libro, Integer> {
 		try {
 			ps = cn.prepareStatement(sql);
 			rs = ps.executeQuery();
-			if (rs.next()) {
+			while (rs.next()) {
 				lista_libros.add(cargarDatos());
 			}
 		}catch (SQLException e) {

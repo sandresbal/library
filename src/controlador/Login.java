@@ -55,25 +55,28 @@ public class Login extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
 		
 		 Connection conn = Conexiones.establecerConexion(); 
 		 ClienteDAO cdao = new ClienteDAO(conn); 
+		 HttpSession sesion = request.getSession();
 		 String user = request.getParameter("user"); 
 		 String pass = request.getParameter("pass"); 
 		 Cliente c = new Cliente(); 
 		 c.setUsuario(user);
 		 c.setPassword(pass); 
 		 Boolean b = cdao.checkUser(c); 
-		 if (b) {
-			 System.out.println("es usuario válido"); 
-			 RequestDispatcher rd =
-				request.getRequestDispatcher("selectema.jsp"); rd.forward(request, response); }
-		 else { 
+		 RequestDispatcher rd;
+		 if (!b) {
 			 System.out.println("no es usuario válido"); 
 			 PrintWriter out = response.getWriter();
-			 out.print("<script>alert('usuario o password incorrecto')</script>"); 
+			 out.print("<script>alert('usuario o password incorrecto')</script>");
+			 rd = request.getRequestDispatcher("index.jsp");
+			 rd.forward(request, response);
+		 }
+		 else { 
+			 System.out.println("es usuario válido"); 
+			 rd =request.getRequestDispatcher("selectema.jsp"); 
+			 rd.forward(request, response); 
 		 }
 		 Conexiones.finalizarConexion(conn);
 		 

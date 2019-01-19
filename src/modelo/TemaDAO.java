@@ -26,14 +26,15 @@ public class TemaDAO implements IntGenericoCRUD<Tema, Integer>{
 		return 0;
 	}
 
+	
 	@Override
 	public List<Tema> findAll() {
 		sql ="select * from temas";
-		List<Tema> lista_temas = new ArrayList<Tema>();
+		List<Tema> lista_temas = new ArrayList<>();
 		try {
 			ps = cn.prepareStatement(sql);
 			rs = ps.executeQuery();
-			if (rs.next()) {
+			while (rs.next()) {
 				lista_temas.add(cargarDatos());
 			}
 		} catch (SQLException e) {
@@ -70,7 +71,7 @@ public class TemaDAO implements IntGenericoCRUD<Tema, Integer>{
 	}
 	
 	public String[] traerNombres() {
-		sql = "select nombres from temas";
+		sql = "select tema from temas";
 		Tema t =  new Tema();
 		String[] temas = null;
 		List<Tema> lista_temas = new ArrayList<Tema>();
@@ -82,9 +83,11 @@ public class TemaDAO implements IntGenericoCRUD<Tema, Integer>{
 				lista_temas.add(t);
 			}
 			int longLista = lista_temas.size();
+			System.out.println("longitud de la lista de temas: " + longLista);
 			temas = new String[longLista - 1];
 			int longArray = temas.length;
-			for (int i = longArray; i < longLista; i++){
+			System.out.println("longitud del array de nombres de temas: " + longArray);
+			for (int i = 0; i < longLista; i++){
 				temas[i] = lista_temas.get(i).getTema();
 			}
 			
@@ -96,7 +99,7 @@ public class TemaDAO implements IntGenericoCRUD<Tema, Integer>{
 	
 	public Tema traerNombre() throws SQLException {
 		Tema t =  new Tema();
-		t.setTema(rs.getString(2));
+		t.setTema(rs.getString(1));
 		return t;
 	}
 	

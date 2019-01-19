@@ -46,7 +46,7 @@ public class VentaDAO implements IntGenericoCRUD<Venta, String>{
 		try {
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
-			if (rs.next()) {
+			while (rs.next()) {
 				lista_de_ventas.add(cargarDatos());
 			}
 		}catch(SQLException ex) {

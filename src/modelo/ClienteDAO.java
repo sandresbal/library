@@ -62,10 +62,12 @@ public class ClienteDAO implements IntGenericoCRUD<Cliente, Integer> {
 	}
 	
 	public boolean checkUser(Cliente c) {
-		sql = "select * where usuario=? AND password = ?";
-		boolean b = false;
+		sql = "select * from clientes where usuario=? AND password =?";
+		boolean b = true;
 		String nombre = c.getUsuario();
+		System.out.println(nombre);
 		String pass_introducido = c.getPassword();
+		System.out.println(pass_introducido);
 		
 		try {
 			ps = cn.prepareStatement(sql);
@@ -73,7 +75,7 @@ public class ClienteDAO implements IntGenericoCRUD<Cliente, Integer> {
 			ps.setString(2, pass_introducido);
 			rs = ps.executeQuery();
 			if (!rs.next()) {
-				b = true;
+				b = false;
 			}
 			
 		} catch (SQLException e) {
