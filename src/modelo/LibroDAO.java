@@ -43,13 +43,13 @@ public class LibroDAO implements IntGenericoCRUD<Libro, Integer> {
 
 	@Override
 	public List<Libro> findAll() {
-		List<Libro> lista_libros = new ArrayList<Libro>();
+		List<Libro> lista_libros = new ArrayList<>();
 		sql = "select * from libros";
 		try {
 			ps = cn.prepareStatement(sql);
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				lista_libros.add(cargarDatos());
+				lista_libros.add(cargarDatos2());
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -121,15 +121,16 @@ public class LibroDAO implements IntGenericoCRUD<Libro, Integer> {
 	
 	public Libro cargarDatos2() throws SQLException {
 		Libro libro = new Libro();
-		libro.setTitulo(rs.getString(1));
-		libro.setAutor(rs.getString(2));
-		libro.setPrecio(rs.getDouble(3));
+		libro.setIdLibro(rs.getInt(1));
+		libro.setTitulo(rs.getString(2));
+		libro.setAutor(rs.getString(3));
+		libro.setPrecio(rs.getDouble(4));
 		return libro;
 	}
 	
 	public ArrayList<Libro> findByTheme(String s) {
 		ArrayList<Libro> lista_libros = new ArrayList<>();
-		sql = "select titulo, autor, precio from libros join temas on libros.idTema = temas.idTema where tema like ?";
+		sql = "select isbn, titulo, autor, precio from libros join temas on libros.idTema = temas.idTema where tema like ?";
 		try {
 			ps = cn.prepareStatement(sql);
 			ps.setString(1, s);

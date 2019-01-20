@@ -10,10 +10,11 @@
 <body>
 	<h1>Seleccione tema</h1>
 
-	<form action="listado_carrito.jsp" method="post">
+	<form action="listado_carrito2.jsp" method="post">
 
 		<select name="tema">
 		
+			<option value="todos"> Todos </option>
 			<% Connection con = Conexiones.establecerConexion();
 			TemaDAO temaDAO = new TemaDAO(con);
 			ArrayList<Tema> lista_temas = (ArrayList<Tema>)temaDAO.findAll();
@@ -21,17 +22,14 @@
 			while(it.hasNext()){
 			    Tema tema =it.next();
 			    System.out.println(tema.toString());%>
-			    <option><%= tema.getTema()%></option>
+			    <option value=<%= tema.getTema()%>><%= tema.getTema()%></option>
 			<% }
-	
 			%>
 
 		</select> 
 		<input type="submit" value="Ver Libros">
 
 	</form>
-	<% String seleccionado = request.getParameter("tema");
-	request.setAttribute("String", seleccionado); %>
 
 </body>
 </html>

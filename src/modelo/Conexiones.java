@@ -25,11 +25,11 @@ public class Conexiones {
 		Connection cn = null;
 		try {
 			cn = DriverManager.getConnection(url, user, pass);
-			System.out.print("conexión establecida");
+			System.out.println("Conexiones: conexión establecida");
 			
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			System.out.println("No se puede establecer la conexión");
+			System.out.println("Conexiones: No se puede establecer la conexión");
 		}
 		return cn;
 	}

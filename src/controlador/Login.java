@@ -70,6 +70,7 @@ public class Login extends HttpServlet {
 		 	c.setUsuario(user);
 		 	c.setPassword(pass); 
 		 	Boolean b = cdao.checkUser(c); 
+		 	System.out.println("¿Es usuario válido?" + b);
 		 	RequestDispatcher rd;
 		 	if (!b) {
 		 		System.out.println("no es usuario válido"); 
