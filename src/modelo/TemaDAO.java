@@ -70,37 +70,25 @@ public class TemaDAO implements IntGenericoCRUD<Tema, Integer>{
 		return t;
 	}
 	
-	public String[] traerNombres() {
-		sql = "select tema from temas";
-		Tema t =  new Tema();
-		String[] temas = null;
-		List<Tema> lista_temas = new ArrayList<Tema>();
+	
+	/*public int idFromTheme(String s) {
+		int idTheme = 0;
+		Tema t = new Tema();
+		sql = "select idTema from temas where tema like ?";
 		try {
 			ps = cn.prepareStatement(sql);
+			ps.setString(1, s);
 			rs = ps.executeQuery();
-			if (rs.next()) {
-				t = traerNombre();
-				lista_temas.add(t);
-			}
-			int longLista = lista_temas.size();
-			System.out.println("longitud de la lista de temas: " + longLista);
-			temas = new String[longLista - 1];
-			int longArray = temas.length;
-			System.out.println("longitud del array de nombres de temas: " + longArray);
-			for (int i = 0; i < longLista; i++){
-				temas[i] = lista_temas.get(i).getTema();
+			while (rs.next()) {
+				idTheme = rs.getInt("idTema");
+				
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return temas;
-	}
-	
-	public Tema traerNombre() throws SQLException {
-		Tema t =  new Tema();
-		t.setTema(rs.getString(1));
-		return t;
-	}
+		
+		return idTheme;
+	}*/
 	
 }

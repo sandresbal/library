@@ -1,7 +1,6 @@
 package controlador;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 
 import javax.servlet.RequestDispatcher;
@@ -39,7 +38,6 @@ public class Login extends HttpServlet {
 		// TODO Auto-generated method stub
 	}
 
-
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -59,27 +57,53 @@ public class Login extends HttpServlet {
 		 Connection conn = Conexiones.establecerConexion(); 
 		 ClienteDAO cdao = new ClienteDAO(conn); 
 		 HttpSession sesion = request.getSession();
-		 String user = request.getParameter("user"); 
-		 String pass = request.getParameter("pass"); 
-		 Cliente c = new Cliente(); 
-		 c.setUsuario(user);
-		 c.setPassword(pass); 
-		 Boolean b = cdao.checkUser(c); 
-		 RequestDispatcher rd;
-		 if (!b) {
-			 System.out.println("no es usuario válido"); 
-			 PrintWriter out = response.getWriter();
-			 out.print("<script>alert('usuario o password incorrecto')</script>");
-			 rd = request.getRequestDispatcher("index.jsp");
-			 rd.forward(request, response);
-		 }
-		 else { 
-			 System.out.println("es usuario válido"); 
-			 rd =request.getRequestDispatcher("selectema.jsp"); 
-			 rd.forward(request, response); 
-		 }
-		 Conexiones.finalizarConexion(conn);
+		 Cliente c = null;
 		 
-	}
+		 System.out.print("procesando el login");
+		 switch (request.getParameter("option")) {
+		 
+		 case("login"):
+		 
+			String user = request.getParameter("usuario"); 
+		 	String pass = request.getParameter("password"); 
+		 	c = new Cliente(); 
+		 	c.setUsuario(user);
+		 	c.setPassword(pass); 
+		 	Boolean b = cdao.checkUser(c); 
+		 	RequestDispatcher rd;
+		 	if (!b) {
+		 		System.out.println("no es usuario válido"); 
+		 		request.setAttribute("mensaje", "usuario o password incorrectos");
+		 		rd = request.getRequestDispatcher("index.jsp");
+		 		rd.forward(request, response);
+		 	}
+		 	else { 
+		 		System.out.println("es usuario válido"); 
+		 		rd =request.getRequestDispatcher("selectema.jsp"); 
+		 		rd.forward(request, response); 
+		 	}
+		 	break;
+		 case ("registro"):
+			c = (Cliente)request.getAttribute("nuevoCliente");
+		 	System.out.println(c.toString());
+		 	int i = cdao.insert(c);
+			System.out.println("var i : " + i);
 
-}
+			if (i == 1) {
+				
+				request.setAttribute("mensaje", "Cliente dado de alta. Procede al login");
+				request.getRequestDispatcher("index.jsp").forward(request, response);
+				
+			}else {
+				request.setAttribute("mensaje", "Problemas al insertar");
+				request.getRequestDispatcher("index.jsp").forward(request, response);
+				
+			}
+			 break;
+		 }
+			 
+		 Conexiones.finalizarConexion(conn);
+		
+
+		}
+	}

@@ -12,7 +12,7 @@
 
 	<form action="listado_carrito.jsp" method="post">
 
-		<select name="theme">
+		<select name="tema">
 		
 			<% Connection con = Conexiones.establecerConexion();
 			TemaDAO temaDAO = new TemaDAO(con);
@@ -26,11 +26,12 @@
 	
 			%>
 
-			<!-- crear tantos options como temas haya en la tabla -->
-
-		</select> <input type="submit" value="Ver Libros">
+		</select> 
+		<input type="submit" value="Ver Libros">
 
 	</form>
+	<% String seleccionado = request.getParameter("tema");
+	request.setAttribute("String", seleccionado); %>
 
 </body>
 </html>

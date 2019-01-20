@@ -7,7 +7,7 @@
 <title>Login</title>
 </head>
 <body>
-	<form action="Login" method="post">
+	<form action="Login?option=login" method="post">
 
 		<label for="user">Usuario: </label> <input type="text" name="user"><br>
 
@@ -16,7 +16,7 @@
 		Recordar usuario:<input type="checkbox" name="recordar" value="si"></input>
 
 		<br> <input type="submit" value="Entrar"><br> 
-		<ahref="registro.jsp">Regístrese</a>
+		<a href="registro.jsp">Regístrese</a>
 
 	</form>
 

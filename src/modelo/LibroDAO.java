@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import beans.Libro;
@@ -116,5 +117,37 @@ public class LibroDAO implements IntGenericoCRUD<Libro, Integer> {
 		libro.setPaginas(rs.getInt(5));
 		libro.setIdTema(rs.getInt(6));
 		return libro;
+	}
+	
+	public Libro cargarDatos2() throws SQLException {
+		Libro libro = new Libro();
+		libro.setTitulo(rs.getString(1));
+		libro.setAutor(rs.getString(2));
+		libro.setPrecio(rs.getDouble(3));
+		return libro;
+	}
+	
+	public ArrayList<Libro> findByTheme(String s) {
+		ArrayList<Libro> lista_libros = new ArrayList<>();
+		sql = "select titulo, autor, precio from libros join temas on libros.idTema = temas.idTema where tema like ?";
+		try {
+			ps = cn.prepareStatement(sql);
+			ps.setString(1, s);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				lista_libros.add(cargarDatos2());
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Tamaño del arraylist: "+ lista_libros.size());
+		System.out.println("hemos encontrado: ");
+		Iterator<Libro> it = lista_libros.iterator();
+		while (it.hasNext()){
+			Libro l = it.next();
+			System.out.println(l.getTitulo());
+
+		}
+		return lista_libros;
 	}
 }
