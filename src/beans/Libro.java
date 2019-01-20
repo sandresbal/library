@@ -1,6 +1,7 @@
 package beans;
 
 import java.io.Serializable;
+import java.util.HashSet;
 
 public class Libro implements Serializable {
 	
@@ -121,7 +122,9 @@ public class Libro implements Serializable {
 				+ ", autor=" + autor + ", precio=" + precio + "]";
 	}
 	
-	
-	
+	public boolean repetido(HashSet<Libro> hash, Libro l) {
+		Boolean b = false;
+		return b;
+	}
 
 }

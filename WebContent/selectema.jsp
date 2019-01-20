@@ -17,6 +17,7 @@
 			<option value="todos"> Todos </option>
 			<% Connection con = Conexiones.establecerConexion();
 			TemaDAO temaDAO = new TemaDAO(con);
+			session.removeAttribute("carrito");
 			ArrayList<Tema> lista_temas = (ArrayList<Tema>)temaDAO.findAll();
 			Iterator<Tema> it = lista_temas.iterator();
 			while(it.hasNext()){

@@ -55,14 +55,17 @@
 		}%>
 		
 	</table>
-	<%
-		ArrayList<Libro> carrito_at = (ArrayList)session.getAttribute("carrito");
-		//Set<Libro> carrito_at = (Set)session.getAttribute("carrito");
+	<%	String mensaje_repe = (String)request.getAttribute("repetido");
+		if (request.getAttribute("repetido") != null){%>
+			<%= mensaje_repe%>
+		<% }
+		//ArrayList<Libro> carrito_at = (ArrayList)session.getAttribute("carrito");
+		HashSet<Libro> carrito_at = (HashSet<Libro>)session.getAttribute("carrito");
+		String seleccionado = (String) session.getAttribute("tema");
 		if (carrito_at != null && carrito_at.size() > 0){
 			System.out.println ("el tamaño del carro es " + carrito_at.size());
 			//ArrayList<Libro> lista_carrito = (HashSet)session.getAttribute("carrito");
 			Iterator<Libro> iter = carrito_at.iterator();%>
-			<div style="height: 200px"></div>
 			<table border="1">
 				<tr>
 					<th></th>
@@ -73,7 +76,7 @@
 			<% while (iter.hasNext()){
 				Libro libro_carrito = iter.next();%>
 				<tr>
-					<td><a href="Procesar?opcion=eliminar&isbn="<%= libro_carrito.getIdLibro()%>>Eliminar</a> 
+					<td><a href="Procesar?opcion=eliminar&isbn=<%=libro_carrito.getIdLibro()%>&tema=<%=seleccionado%>">Eliminar</a> 
 					<td><%=libro_carrito.getTitulo()%></td>
 					<td><%=libro_carrito.getAutor()%></td>
 					<td><%=libro_carrito.getPrecio()%></td>
