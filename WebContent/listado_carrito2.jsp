@@ -13,6 +13,7 @@
 	<%
 		
 	%>
+	<div style="margin-top:20px; margin-bottom:20px">
 	<table border="1">
 		<tr>
 			<th></th>
@@ -55,16 +56,20 @@
 		}%>
 		
 	</table>
+			<a href="selectema.jsp">Otro tema</a>
+			</div>
+	
 	<%	String mensaje_repe = (String)request.getAttribute("repetido");
 		if (request.getAttribute("repetido") != null){%>
 			<%= mensaje_repe%>
 		<% }
-		//ArrayList<Libro> carrito_at = (ArrayList)session.getAttribute("carrito");
+
 		HashSet<Libro> carrito_at = (HashSet<Libro>)session.getAttribute("carrito");
+		HashSet<Integer> listado_isbn = (HashSet<Integer>)session.getAttribute("anadidos");
 		String seleccionado = (String) session.getAttribute("tema");
 		if (carrito_at != null && carrito_at.size() > 0){
-			System.out.println ("el tamaño del carro es " + carrito_at.size());
-			//ArrayList<Libro> lista_carrito = (HashSet)session.getAttribute("carrito");
+			System.out.println ("el tamaño del carro al cargar de nuevo listado.jsp es " + carrito_at.size());
+			System.out.println ("el tamaño de la lista al cargar de nuevo listado.jsp de isbns es " + listado_isbn.size());
 			Iterator<Libro> iter = carrito_at.iterator();%>
 			<table border="1">
 				<tr>
@@ -83,9 +88,11 @@
 				<tr>	
 			<% }%>
 			</table>
-		<a href="selectema.jsp">Otro tema</a>
 	<% 
 		}
+		if (session.getAttribute("carrito")!= null){%>
+			 <a href="Procesar?opcion=ejecutarcompra">Ejecutar compra</a>
+		<% }
 	%>
 		</body>
 </html>

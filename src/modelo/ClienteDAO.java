@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import beans.Cliente;
+import beans.Venta;
 
 public class ClienteDAO implements IntGenericoCRUD<Cliente, Integer> {
 
@@ -48,6 +49,23 @@ public class ClienteDAO implements IntGenericoCRUD<Cliente, Integer> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public Cliente findByName(String srt) {
+		Cliente v = null;
+		sql = "select * from clientes where usuario = ?";
+		try {
+			ps = cn.prepareStatement(sql);
+			ps.setString(1, srt);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				v = cargarDatos();
+			}
+			
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return v;
+	}
 
 	@Override
 	public int update(Cliente entidad) {
@@ -82,5 +100,15 @@ public class ClienteDAO implements IntGenericoCRUD<Cliente, Integer> {
 			e.printStackTrace();
 		}
 		return b;
+	}
+	
+	public Cliente cargarDatos() throws SQLException{
+		Cliente c = new Cliente();
+		c.setIdCliente(rs.getInt(1));
+		c.setUsuario(rs.getString(2));
+		c.setPassword(rs.getString(3));
+		c.setEmail(rs.getString(4));
+		c.setTelefono(rs.getInt(5));
+		return c;
 	}
 }

@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import beans.Venta;
@@ -25,12 +25,12 @@ public class VentaDAO implements IntGenericoCRUD<Venta, String>{
 	public int insert(Venta entidad) {
 		int filasCambiadas = -1;
 		sql = "insert into ventas (idCliente, idLibro, fecha) values(?, ?, ?)";
-		Date fecha = new Date();
+		Date fecha = new Date(0);
 		try {
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, entidad.getIdCliente());
 			ps.setInt(2, entidad.getIdLibro());
-			ps.setDate(3, (java.sql.Date) fecha);
+			ps.setDate(3, new Date(new java.util.Date().getTime()));
 			filasCambiadas = ps.executeUpdate();
 			
 		}catch(SQLException ex) {

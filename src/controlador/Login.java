@@ -53,58 +53,69 @@ public class Login extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		 Connection conn = Conexiones.establecerConexion(); 
-		 ClienteDAO cdao = new ClienteDAO(conn); 
-		 HttpSession sesion = request.getSession();
-		 Cliente c = null;
-		 
-		 System.out.print("procesando el login");
-		 switch (request.getParameter("option")) {
-		 
-		 case("login"):
-		 
-			String user = request.getParameter("usuario"); 
-		 	String pass = request.getParameter("password"); 
-		 	c = new Cliente(); 
-		 	c.setUsuario(user);
-		 	c.setPassword(pass); 
-		 	Boolean b = cdao.checkUser(c); 
-		 	System.out.println("¿Es usuario válido?" + b);
-		 	RequestDispatcher rd;
-		 	if (!b) {
-		 		System.out.println("no es usuario válido"); 
-		 		request.setAttribute("mensaje", "usuario o password incorrectos");
-		 		rd = request.getRequestDispatcher("index.jsp");
-		 		rd.forward(request, response);
-		 	}
-		 	else { 
-		 		System.out.println("es usuario válido"); 
-		 		rd =request.getRequestDispatcher("selectema.jsp"); 
-		 		rd.forward(request, response); 
-		 	}
-		 	break;
-		 case ("registro"):
-			c = (Cliente)request.getAttribute("nuevoCliente");
-		 	System.out.println(c.toString());
-		 	int i = cdao.insert(c);
-			System.out.println("var i : " + i);
 
-			if (i == 1) {
-				
-				request.setAttribute("mensaje", "Cliente dado de alta. Procede al login");
-				request.getRequestDispatcher("index.jsp").forward(request, response);
-				
-			}else {
-				request.setAttribute("mensaje", "Problemas al insertar");
-				request.getRequestDispatcher("index.jsp").forward(request, response);
-				
+		Connection conn = Conexiones.establecerConexion();
+		ClienteDAO cdao = new ClienteDAO(conn);
+		HttpSession sesion = request.getSession();
+		Cliente c = null;
+		Boolean b;
+
+		String user = request.getParameter("usuario");
+		String pass = request.getParameter("password");
+
+		System.out.print("procesando el login");
+		switch (request.getParameter("option")) {
+
+		case ("login"):
+
+			c = new Cliente();
+			c.setUsuario(user);
+			c.setPassword(pass);
+			b = cdao.checkUser(c);
+			System.out.println("¿Es usuario válido?" + b);
+			RequestDispatcher rd;
+			if (!b) {
+				System.out.println("no es usuario válido");
+				request.setAttribute("mensaje", "usuario o password incorrectos");
+				rd = request.getRequestDispatcher("index.jsp");
+				rd.forward(request, response);
+			} else {
+				System.out.println("es usuario válido");
+				Cliente cdef = cdao.findByName(user);
+				sesion.setAttribute("cliente", cdef);
+
+				System.out.println("el user es " + c.getIdCliente());
+
+				rd = request.getRequestDispatcher("selectema.jsp");
+				rd.forward(request, response);
 			}
-			 break;
-		 }
-			 
-		 Conexiones.finalizarConexion(conn);
-		
+			break;
+		case ("registro"):
+			c = (Cliente) request.getAttribute("nuevoCliente");
+			System.out.println(c.toString());
+			b = cdao.checkUser(c);
+			if (!b) {
+				request.setAttribute("mensaje", "Ya hay un usuario con ese nombre");
+				request.getRequestDispatcher("index.jsp").forward(request, response);
+			} else {
+				int i = cdao.insert(c);
+				System.out.println("var i : " + i);
 
+				if (i == 1) {
+
+					request.setAttribute("mensaje", "Cliente dado de alta. Procede al login");
+					request.getRequestDispatcher("index.jsp").forward(request, response);
+
+				} else {
+					request.setAttribute("mensaje", "Problemas al insertar");
+					request.getRequestDispatcher("index.jsp").forward(request, response);
+
+				}
+			}
+			break;
 		}
+
+		Conexiones.finalizarConexion(conn);
+
 	}
+}

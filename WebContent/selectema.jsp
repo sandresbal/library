@@ -8,6 +8,14 @@
 <title>Selecciona tema</title>
 </head>
 <body>
+<% if ()
+
+
+	String mensajecompra = (String)request.getAttribute("mensajecompra");
+	if (request.getAttribute("mensajecompra") != null){%>
+	<%= mensajecompra %>
+<% }
+%>
 	<h1>Seleccione tema</h1>
 
 	<form action="listado_carrito2.jsp" method="post">
@@ -17,7 +25,6 @@
 			<option value="todos"> Todos </option>
 			<% Connection con = Conexiones.establecerConexion();
 			TemaDAO temaDAO = new TemaDAO(con);
-			session.removeAttribute("carrito");
 			ArrayList<Tema> lista_temas = (ArrayList<Tema>)temaDAO.findAll();
 			Iterator<Tema> it = lista_temas.iterator();
 			while(it.hasNext()){
