@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.Iterator;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -48,6 +49,7 @@ public class Procesar extends HttpServlet {
 			throws ServletException, IOException {
 		
 		HttpSession ses = request.getSession();
+		ServletContext sc = request.getServletContext();
 		String tema_seleccionado = (String) ses.getAttribute("tema");
 		System.out.println("Procesar: el tema seleccionado es " + tema_seleccionado);
 		String opcion = request.getParameter("opcion");
@@ -107,7 +109,7 @@ public class Procesar extends HttpServlet {
 			ses.setAttribute("carrito", carrito_compra);
 			ses.setAttribute("anadidos", isbn_anadidos);
 			Conexiones.finalizarConexion(cn);
-			rd = request.getRequestDispatcher("listado_carrito2.jsp");
+			rd = request.getRequestDispatcher("listado_carrito.jsp");
 			rd.forward(request, response);
 			break;
 			
@@ -136,7 +138,7 @@ public class Procesar extends HttpServlet {
 			
 			ses.setAttribute("anadidos", isbn_anadidos);
 			Conexiones.finalizarConexion(cn);
-			rd = request.getRequestDispatcher("listado_carrito2.jsp");
+			rd = request.getRequestDispatcher("listado_carrito.jsp");
 			rd.forward(request, response);
 			break;
 			
@@ -150,10 +152,19 @@ public class Procesar extends HttpServlet {
 				Libro libc = (Libro) itventa.next();
 				v.setIdLibro(libc.getIdLibro());
 				System.out.println("El id de libro es " + libc.getIdLibro());
-				Cliente c = (Cliente) ses.getAttribute("cliente");
-				System.out.println("El id de cliente es " + c.getIdCliente());
-				v.setIdCliente(c.getIdCliente());
-				vDAO.insert(v);
+				Cliente c = new Cliente();
+				if (sc.getAttribute("cliente") != null) {
+					c = (Cliente) sc.getAttribute("cliente");
+					System.out.println ("hay un atributo de sesión cliente");
+					v.setIdCliente(c.getIdCliente());
+					vDAO.insert(v);
+				} else {
+					c = (Cliente) ses.getAttribute("cliente");
+					System.out.println ("hay un atributo de petición cliente");
+					v.setIdCliente(c.getIdCliente());
+					vDAO.insert(v);
+				}
+
 			}
 			request.setAttribute("mensajecompra", "Compra efectuada con éxito. Selecciona un tema para empezar");
 
@@ -161,6 +172,16 @@ public class Procesar extends HttpServlet {
 			ses.removeAttribute("anadidos");
 			Conexiones.finalizarConexion(cn);
 			rd = request.getRequestDispatcher("selectema.jsp");
+			rd.forward(request, response);
+			break;
+		case ("cerrarsesion"):
+			if (sc.getAttribute("cliente") != null) {
+				sc.removeAttribute("cliente");
+			} else {
+				ses.removeAttribute("cliente");
+			}
+			Conexiones.finalizarConexion(cn);
+			rd = request.getRequestDispatcher("index.jsp");
 			rd.forward(request, response);
 			break;
 		}

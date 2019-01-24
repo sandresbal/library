@@ -7,6 +7,19 @@
 <title>Login</title>
 </head>
 <body>
+
+<!--  Comenzamos comprobando si el usuario quiere ser recordado. Si es así,
+es decir, si existe un atributo de aplicación cliente, redireccionamos al selector
+de temas para hacer su compra -->
+
+<% 
+
+if (application.getAttribute("cliente") != null){
+	System.out.println ("hay un atributo de app cliente, recordamos sesión y saltamos al login");
+	response.sendRedirect("./selectema.jsp");
+} %>
+
+
 	<form action="Login?option=login" method="post">
 
 		<label for="user">Usuario: </label> <input type="text" name="usuario"><br>
@@ -19,6 +32,8 @@
 		<a href="registro.jsp">Regístrese</a>
 
 	</form>
+
+<!-- Creamos un string para mostrar mensajes de error en el proceso del login -->
 
 	<% 	String mensa = (String)request.getAttribute("mensaje");
 		if (mensa != null){%>
